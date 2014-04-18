@@ -10,15 +10,13 @@
 #include <avr/pgmspace.h>
 #include <string.h>
 
-#include "announce.h"
-#include "net.h"
-#include "w5100_reg.h"
-#include "tftp.h"
-#include "validate.h"
-#include "debug.h"
+#include	"announce.h"
+#include	"spi.h"
+#include	"w5100.h"
+#include	"debug.h"
+#include	"debug_ann.h"
 
-
-#ifdef _ANNOUNCE
+#if defined(ANNOUNCE)
 uint16_t readPointer;
 char* hex = "0123456789ABCDEF";
 const char bootloaderIdentString[] PROGMEM = "Ethernet 1.0";
@@ -41,13 +39,13 @@ void announceReply()
 	uint8_t value;
 	uint8_t i;
 
-	writePointer = netReadWord(REG_S2_TX_WR0) + S2_TX_START;
+	writePointer = spiReadWord(REG_S2_TX_WR0) + S2_TX_START;
 	txPtr = txBuffer + 2;
 
 	// Send IP address in hex
 	//
 	for(i = REG_SIPR0; i <= REG_SIPR3; i++) {
-		value = netReadReg(i);
+		value = spiReadReg(i);
 		*txPtr++ = hex[value >> 4];
 		*txPtr++ = hex[value & 0xf];
 	}
@@ -63,12 +61,12 @@ void announceReply()
 	packetLength += 2;
 	txPtr = txBuffer;
 	while(packetLength--) {
-		netWriteReg(writePointer++, *txPtr++);
+		spiWriteReg(writePointer++, *txPtr++);
 		if(writePointer == S2_TX_END) writePointer = S2_TX_START;
 	}
-	netWriteWord(REG_S2_TX_WR0, writePointer - S2_TX_START);
-	netWriteReg(REG_S2_CR, CR_SEND);
-	while(netReadReg(REG_S2_CR));
+	spiWriteWord(REG_S2_TX_WR0, writePointer - S2_TX_START);
+	spiWriteReg(REG_S2_CR, CR_SEND);
+	while(spiReadReg(REG_S2_CR));
 }
 
 //FIXME: void announcePacket(uint16_t packetSize) {
@@ -81,17 +79,17 @@ void announcePacket()
 	uint8_t* bufPtr = buffer;
 	uint16_t count;
 
-	readPointer = netReadWord(REG_S2_RX_RD0) + S2_RX_START;
+	readPointer = spiReadWord(REG_S2_RX_RD0) + S2_RX_START;
 
 	// Read destination IP address
 	for(count = 0; count < 4; count++) {
-		netWriteReg(REG_S2_DIPR0 + count, readNextByte());
+		spiWriteReg(REG_S2_DIPR0 + count, readNextByte());
 	}
 
 	// Read destination port - but ignore it and respond on 5555 anyway.
 	readNextByte();
 	readNextByte();
-	netWriteWord(REG_S2_DPORT0, ANNOUNCE_PORT);
+	spiWriteWord(REG_S2_DPORT0, ANNOUNCE_PORT);
 
 	// Read packet length
 	packetLength = readNextByte() | (readNextByte() << 8);
@@ -101,8 +99,8 @@ void announcePacket()
 	for(count = packetLength; --count;) {
 		*bufPtr++ = readNextByte();
 	}
-	netWriteWord(REG_S2_RX_RD0, readPointer - S2_RX_START); // Write back new pointer
-	netWriteWord(REG_S2_CR, CR_RECV); // Receive again
+	spiWriteWord(REG_S2_RX_RD0, readPointer - S2_RX_START); // Write back new pointer
+	spiWriteWord(REG_S2_CR, CR_RECV); // Receive again
 
 	// Dump packet
 	bufPtr = buffer;
@@ -115,26 +113,26 @@ void announceInit()
 {
 	// Open socket
 	do {
-		netWriteWord(REG_S2_PORT0, ANNOUNCE_PORT);
-		netWriteReg(REG_S2_MR, MR_UDP);
-		netWriteReg(REG_S2_CR, CR_OPEN);
-		if(netReadReg(REG_S2_SR) != SOCK_UDP)
-			netWriteReg(REG_S2_CR, CR_CLOSE);
-	} while(netReadReg(REG_S2_SR) != SOCK_UDP);
+		spiWriteWord(REG_S2_PORT0, ANNOUNCE_PORT);
+		spiWriteReg(REG_S2_MR, MR_UDP);
+		spiWriteReg(REG_S2_CR, CR_OPEN);
+		if(spiReadReg(REG_S2_SR) != SOCK_UDP)
+			spiWriteReg(REG_S2_CR, CR_CLOSE);
+	} while(spiReadReg(REG_S2_SR) != SOCK_UDP);
 
-#ifdef _VERBOSE
-	traceln(" Ann: Network broadcast init done");
-#endif
+
+	DBG_ANN(tracePGMlnAnn(mDebugAnn_DONE);)
+
 }
 
 void announcePoll()
 {
-	uint16_t packetSize = netReadWord(REG_S2_RX_RSR0);
+	uint16_t packetSize = spiReadWord(REG_S2_RX_RSR0);
 
 	if(packetSize) {
 		announcePacket(packetSize);
 		// Close the socket
-		netWriteReg(REG_S2_CR, CR_CLOSE);
+		spiWriteReg(REG_S2_CR, CR_CLOSE);
 		announceInit();
 	}
 }

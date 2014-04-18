@@ -1,0 +1,3 @@
+[submodule "utilities/arscons"]
+	path = utilities/arscons
+	url = https://github.com/suapapa/arscons.git

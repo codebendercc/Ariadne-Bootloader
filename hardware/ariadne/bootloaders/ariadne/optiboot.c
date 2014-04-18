@@ -11,31 +11,32 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <avr/boot.h>
+#include <avr/wdt.h>
 
-#include "optiboot.h"
 #include "util.h"
 #include "serial.h"
 #include "watchdog.h"
-#include "stk500.h"
 #include "neteeprom.h"
-#include "debug.h"
-
-uint16_t address = 0;
-uint8_t  length;
+#include "optiboot.h"
+#include "optiboot_stk500.h"
 
 
-void verifySpace()
+static uint16_t address = 0;
+static uint8_t  length;
+
+static void verifySpace(void)
 {
 	if(getch() != CRC_EOP) {
-		watchdogConfig(WATCHDOG_16MS);	// shorten WD timeout
-		while(1)						// and busy-loop so that WD causes
-			;							// a reset and app start.
+		WDTCSR = _BV(WDCE) | _BV(WDE);
+		WDTCSR = WATCHDOG_16MS;	// shorten WD timeout
+		while(1)				// and busy-loop so that WD causes
+			;					// a reset and app start.
 	}
 	putch(STK_INSYNC);
 }
 
 
-void getNch(uint8_t count)
+static void getNch(uint8_t count)
 {
 	do getch();
 	while(--count);
@@ -43,7 +44,7 @@ void getNch(uint8_t count)
 }
 
 
-uint8_t proccessCommand()
+uint8_t processOptiboot(void)
 {
 	uint8_t ch;
 
@@ -186,16 +187,5 @@ uint8_t proccessCommand()
 		verifySpace();
 	}
 	putch(STK_OK);
-	return(1);
-}
-
-
-uint8_t serialPoll()
-{
-	if(UCSR0A & _BV(RXC0)) {
-		resetTick();
-		serialFlashing = TRUE;
-		return(proccessCommand());
-	}
 	return(1);
 }

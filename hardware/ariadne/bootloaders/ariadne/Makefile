@@ -2,7 +2,7 @@
 # Author: Stelios Tsampas, from work by optiboot
 # Copyright: optiboot
 # License: GPL http://www.gnu.org/licenses/gpl-2.0.html
-# Project: tftpboot
+# Project: ariadne bootloader
 # Function: tftp implementation and flasher
 # Version: 0.2 tftp flashing functional, serial flashing
 
@@ -38,10 +38,10 @@ PROGRAM    = ariadne
 ISPTOOL    = avrispmkii
 #ISPTOOL   = usbtiny
 ISPPORT	   = usb
-ISPSPEED   = -b19200
+ISPSPEED   = -b38400
 
 MCU_TARGET = atmega328p
-LDSECTIONS = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
+LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 
 # Build environments
 # Start of some ugly makefile-isms to allow optiboot to be built
@@ -112,8 +112,9 @@ STK500-1 = $(STK500) -e -d$(MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET).hex \
 	   -lFF -LFF -f$(HFUSE)$(LFUSE) -EF8 -ms -q -cUSB -I200kHz -s -wt
 STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 
-OBJ      = main.o net.o tftp.o validate.o debug.o watchdog.o serial.o util.o announce.o optiboot.o
-OPTIMIZE = -Os -fno-inline-small-functions -fno-split-wide-types -mno-interrupts
+OBJ      = main.o spi.o w5100.o tftp.o validate.o debug.o watchdog.o serial.o util.o announce.o optiboot.o stk500boot.o
+OPTIMIZE = -Os -fno-inline-small-functions -fno-split-wide-types -mno-interrupts -mrelax
+OPTIMIZE += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -fno-jump-tables -std=gnu99 #-save-temps
 
 DEFS     =
 LIBS     =
@@ -122,7 +123,7 @@ CC       = $(GCCROOT)avr-gcc
 
 # Override is only needed by avr-lib build system.
 
-override CFLAGS  = -g -Wall -Wextra $(OPTIMIZE) -mmcu=$(MCU_TARGET) -DF_CPU=$(AVR_FREQ) $(DEFS)
+override CFLAGS  = -g -Wall -Wextra -Wstrict-prototypes $(OPTIMIZE) -mmcu=$(MCU_TARGET) -DF_CPU=$(AVR_FREQ) $(DEFS)
 override LDFLAGS = $(LDSECTIONS) -Wl,--relax -Wl,--gc-sections
 
 OBJCOPY = $(GCCROOT)avr-objcopy
@@ -132,12 +133,12 @@ SIZE    = $(GCCROOT)avr-size
 
 
 # Build with the debug messages enabled
-# Use it only if you have already seen the source
+# Use it only if you have already seen the source code
 debug328: TARGET = debug328
 debug328: MCU_TARGET = atmega328p
-debug328: CFLAGS += '-D_DEBUG' '-D_DEBUG_TFTP' '-D_ARDUINO_ETHERNET' '-DBAUD_RATE=115200'
+debug328: CFLAGS += '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DBAUD_RATE=115200'
 debug328: AVR_FREQ = 16000000L
-debug328: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
+debug328: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 debug328: $(PROGRAM)_debug328.hex
 debug328: $(PROGRAM)_debug328.lst
 debug328_isp: debug328
@@ -152,23 +153,33 @@ debug328_isp: EFUSE = 05
 debug328_isp: isp
 
 # Debug build for Arduino Mega2560
-# debug2560: TARGET = debug2560
-# debug2560: MCU_TARGET = atmega2560
-# debug2560: CFLAGS += '-D_DEBUG' '-D_DEBUG_TFTP' '-DBAUD_RATE=115200'
-# debug2560: AVR_FREQ = 16000000L
-# debug2560: LDSECTIONS  = -Wl,--section-start=.text=0x1f000
-# debug2560: $(PROGRAM)_debug2560.hex
-# debug2560: $(PROGRAM)_debug2560.lst
-# debug2560_isp: debug2560
-# debug2560_isp: TARGET = debug2560
-# debug2560_isp: MCU_TARGET = atmega2560
-# # Low power xtal (16MHz) 16KCK/14CK+65ms
-# debug2560_isp: LFUSE = FF
-# # 4069 byte boot
-# debug2560_isp: HFUSE = D0
-# # 2.7V brownout
-# debug2560_isp: EFUSE = FD
-# debug2560_isp: isp
+debug2560: TARGET = debug2560
+debug2560: MCU_TARGET = atmega2560
+debug2560: CFLAGS += '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DDEBUG_VALD=1' '-DBAUD_RATE=115200'
+debug2560: AVR_FREQ = 16000000L
+debug2560: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
+debug2560: $(PROGRAM)_debug2560.hex
+debug2560: $(PROGRAM)_debug2560.lst
+debug2560_isp: debug2560
+debug2560_isp: TARGET = debug2560
+debug2560_isp: MCU_TARGET = atmega2560
+# Low power xtal (16MHz) 16KCK/14CK+65ms
+debug2560_isp: LFUSE = FF
+# 4069 byte boot
+debug2560_isp: HFUSE = D0
+# 2.7V brownout
+debug2560_isp: EFUSE = FD
+debug2560_isp: isp
+
+# Build with the debug messages enabled
+# Use it only if you have already seen the source code
+debug32u4: TARGET = debug32u4
+debug32u4: MCU_TARGET = atmega32u4
+debug32u4: CFLAGS += '-DDEBUG_MAIN=1' '-DDEBUG_NET=1' '-DDEBUG_TFTP=1' '-DBAUD_RATE=115200'
+debug32u4: AVR_FREQ = 16000000L
+debug32u4: LDSECTIONS = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
+debug32u4: $(PROGRAM)_debug32u4.hex
+debug32u4: $(PROGRAM)_debug32u4.lst
 
 #
 #
@@ -247,11 +258,12 @@ debug328_isp: isp
 
 
 # Atmega328 used on Arduino UNO and Arduino Ethernet
+atmega328: EXT_OBJ = optiboot.o
 atmega328: TARGET = atmega328
 atmega328: MCU_TARGET = atmega328p
 atmega328: CFLAGS += '-DBAUD_RATE=115200'
 atmega328: AVR_FREQ = 16000000L
-atmega328: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
+atmega328: LDSECTIONS  = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 atmega328: $(PROGRAM)_atmega328.hex
 atmega328: $(PROGRAM)_atmega328.lst
 atmega328_isp: atmega328
@@ -267,9 +279,9 @@ atmega328_isp: isp
 
 atmega328_ethernet: TARGET = atmega328_ethernet
 atmega328_ethernet: MCU_TARGET = atmega328p
-atmega328_ethernet: CFLAGS += '-D_ARDUINO_ETHERNET' '-DBAUD_RATE=115200'
+atmega328_ethernet: CFLAGS += '-DARDUINO_ETHERNET' '-DBAUD_RATE=115200'
 atmega328_ethernet: AVR_FREQ = 16000000L
-atmega328_ethernet: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
+atmega328_ethernet: LDSECTIONS  = -Wl,--section-start=.text=0x7000 #-Wl,--section-start=.version=0x7ffe
 atmega328_ethernet: $(PROGRAM)_atmega328_ethernet.hex
 atmega328_ethernet: $(PROGRAM)_atmega328_ethernet.lst
 atmega328_ethernet_isp: atmega328_ethernet
@@ -325,23 +337,23 @@ atmega328_ethernet_isp: isp
 #
 #
 # Mega has a minimum boot size of 1024 bytes
-# mega2560: TARGET = atmega2560
-# mega2560: MCU_TARGET = atmega2560
-# mega2560: CFLAGS += '-DBAUD_RATE=115200'
-# mega2560: AVR_FREQ = 16000000L
-# mega2560: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
-# mega2560: $(PROGRAM)_atmega2560.hex
-# mega2560: $(PROGRAM)_atmega2560.lst
-# mega2560_isp: mega2560
-# mega2560_isp: TARGET = atmega2560
-# mega2560_isp: MCU_TARGET = atmega2560
-# # Low power xtal (16MHz) 16KCK/14CK+65ms
-# mega2560_isp: LFUSE = FF
-# # 4069 byte boot
-# mega2560_isp: HFUSE = D8
-# # 2.7V brownout
-# mega2560_isp: EFUSE = FD
-# mega2560_isp: isp
+atmega2560: TARGET = atmega2560
+atmega2560: MCU_TARGET = atmega2560
+atmega2560: CFLAGS += '-DBAUD_RATE=115200'
+atmega2560: AVR_FREQ = 16000000L
+atmega2560: LDSECTIONS  = -Wl,--section-start=.text=0x3e000
+atmega2560: $(PROGRAM)_atmega2560.hex
+atmega2560: $(PROGRAM)_atmega2560.lst
+atmega2560_isp: atmega2560
+atmega2560_isp: TARGET = atmega2560
+atmega2560_isp: MCU_TARGET = atmega2560
+# Low power xtal (16MHz) 16KCK/14CK+65ms
+atmega2560_isp: LFUSE = FF
+# 4069 byte boot
+atmega2560_isp: HFUSE = D8
+# 2.7V brownout
+atmega2560_isp: EFUSE = FD
+atmega2560_isp: isp
 #
 #
 # # ATmega8
@@ -495,7 +507,7 @@ isp-stk500: $(PROGRAM)_$(TARGET).hex
 	$(SIZE) $@
 
 clean:
-	rm -rf *.o *.elf *.lst *.map *.sym *.lss *.eep *.srec *.bin *.hex *~
+	rm -rf *.o *.i *.s *.elf *.lst *.map *.sym *.lss *.eep *.srec *.bin *.hex *~
 
 %.lst: %.elf
 	$(OBJDUMP) -h -S $< > $@

@@ -12,31 +12,34 @@
 #include <util/delay.h>
 
 #include "util.h"
-#include "pin_defs.h"
-
+#include "spi.h"
 #include "debug.h"
+#include "debug_util.h"
 
-uint16_t lastTimer1;
-uint16_t tick = 0;
+static uint16_t last_timer_1;
+static uint16_t tick = 0;
 
 
 void updateLed(void)
 {
-	uint16_t nextTimer1 = TCNT1;
-	if(nextTimer1 & 0x400) LED_PORT ^= _BV(LED); // Led pin high
+	uint16_t next_timer_1 = TCNT1;
+
+	if(next_timer_1 & 0x400) LED_PORT ^= _BV(LED); // Led pin high
 	else LED_PORT &= ~_BV(LED); // Led pin low
-	if(nextTimer1 < lastTimer1) {
+
+	if(next_timer_1 < last_timer_1) {
 		tick++;
-#ifdef _DEBUG_UTIL
-		traceln("Tick: ");
-		tracenum(tick);
-		traceln(" nTM: ");
-		tracenum(nextTimer1);
-		traceln(" lTM: ");
-		tracenum(lastTimer1);
-#endif
+		DBG_UTIL(
+		    tracePGMlnUtil(mDebugUtil_TICK);
+		    tracenum(tick);
+		    tracePGMlnUtil(mDebugUtil_NEXT);
+		    tracenum(next_timer_1);
+		    tracePGMlnUtil(mDebugUtil_LAST);
+		    tracenum(last_timer_1);
+		)
 	}
-	lastTimer1 = nextTimer1;
+
+	last_timer_1 = next_timer_1;
 }
 
 void resetTick(void)
@@ -48,7 +51,12 @@ void resetTick(void)
 uint8_t timedOut(void)
 {
 	// Never timeout if there is no code in Flash
-	if (pgm_read_word(0x0000) == 0xFFFF) return(0);
+#if (FLASHEND > 0x10000)
+	if(pgm_read_word_far(0x0000) == 0xFFFF) return(0);
+#else
+	if(pgm_read_word_near(0x0000) == 0xFFFF) return(0);
+#endif
+
 	if(tick > TIMEOUT) return(1);
 	else return(0);
 }

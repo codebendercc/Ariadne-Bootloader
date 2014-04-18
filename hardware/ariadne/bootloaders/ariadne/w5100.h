@@ -1,3 +1,6 @@
+#ifndef w5100_h
+#define w5100_h
+
 //Mode
 #define REG_MR          0x000
 //GW Address
@@ -50,8 +53,8 @@
 //Unreachable Port
 #define REG_UPORT0      0x02E
 #define REG_UPORT1      0x02F
-
-//Socket 0 addresses
+/**
+ * Socket 0 addresses */
 //Mode
 #define REG_S0_MR       0x400
 //Command
@@ -102,8 +105,8 @@
 //RX Read Pointer
 #define REG_S0_RX_RD0   0x428
 #define REG_S0_RX_RD1   0x429
-
-//Socket 1 addresses
+/**
+ * Socket 1 addresses */
 #define REG_S1_MR       0x500
 #define REG_S1_CR       0x501
 #define REG_S1_IR       0x502
@@ -137,8 +140,8 @@
 #define REG_S1_RX_RSR1  0x527
 #define REG_S1_RX_RD0   0x528
 #define REG_S1_RX_RD1   0x529
-
-//Socket 2 addresses
+/**
+ * Socket 2 addresses */
 #define REG_S2_MR       0x600
 #define REG_S2_CR       0x601
 #define REG_S2_IR       0x602
@@ -172,8 +175,8 @@
 #define REG_S2_RX_RSR1  0x627
 #define REG_S2_RX_RD0   0x628
 #define REG_S2_RX_RD1   0x629
-
-//Socket 3 addresses
+/**
+ * Socket 3 addresses */
 #define REG_S3_MR       0x700
 #define REG_S3_CR       0x701
 #define REG_S3_IR       0x702
@@ -225,22 +228,17 @@
 #define S3_RX_START 0x7800
 #define S3_RX_END   0x8000
 
-
 #define MR_CLOSED         0x00
 #define MR_TCP            0x01
 #define MR_UDP            0x02
 #define MR_IPRAW          0x03
 #define MR_MACRAW         0x04
 #define MR_PPPOE          0x05
-
-
 /**
  * Sn_CR (Socket n Command Register)[R/W] [0x0401,0x0501,0x0601,0x0701] [0x00]
  * This register is utilized for socket n initialization, close, connection
  * establishment, termination, data transmission and command receipt. After
- * performing the commands, the register value will be automatically cleared
- * to 0x00.
- */
+ * performing the commands, the register value will be automatically cleared to 0x00. */
 #define CR_OPEN           0x01
 #define CR_LISTEN         0x02
 #define CR_CONNECT        0x04
@@ -250,13 +248,10 @@
 #define CR_SEND_MAC       0x21
 #define CR_SEND_KEEP      0x22
 #define CR_RECV           0x40
-
-
 /**
  * Sn_SR (Socket n Status Register) [R] [0x0403, 0x0503, 0x0603, 0x0703] [0x00]
  * This register has the status value of socket n. The main status is shown
- * in the below diagram.
- */
+ * in the below diagram. */
 #define SOCK_CLOSED       0x00
 #define SOCK_ARP1         0x11
 #define SOCK_INIT         0x13
@@ -275,16 +270,24 @@
 #define SOCK_IPRAW        0x32
 #define SOCK_MACRAW       0x42
 #define SOCK_PPPOE        0x5F
-
-
 /**
  * Sn_IR (Socket n Interrupt Register) [R] [0x0402, 0x0502, 0x0602, 0x0702] [0x00]
- * This register is used for notifying connection establishment and termination*, receiving data
- * and Timeout. The Socket n Interrupt Register must be cleared by writing ‘1’.
- */
+ * This register is used for notifying connection establishment and termination, receiving data
+ * and Timeout. The Socket n Interrupt Register must be cleared by writing ‘1’. */
 #define IR_SEND_OK   0x10
 #define IR_TIMEOUT   0x08
 #define IR_RECV      0x04
 #define IR_DISCON    0x02
 #define IR_CON       0x01
 #define IR_CLR       0x00
+
+
+/* Network settings */
+#define IP_ADDR     192,168,1,128
+#define SUB_MASK    255,255,255,0
+#define GW_ADDR     192,168,1,254
+#define MAC_ADDR    0xDE,0xAD,0xBE,0xEF,0xFE,0xED
+
+void netInit(void);
+
+#endif

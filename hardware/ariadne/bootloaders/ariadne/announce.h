@@ -5,7 +5,7 @@
 #define ANNOUNCE_DATA_SIZE    128
 #define bootloaderIdentStringLength (12)
 
-#ifdef _ANNOUNCE
+#if defined(ANNOUNCE)
 void announceInit();
 void announcePoll();
 #endif

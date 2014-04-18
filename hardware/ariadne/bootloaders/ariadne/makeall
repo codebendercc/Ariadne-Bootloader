@@ -4,6 +4,7 @@ make clean
 # The "big two" standard bootloaders.
 make atmega328
 make atmega328_ethernet
+make atmega2560
 #make atmega8
 #make atmega168
 #make debug328
