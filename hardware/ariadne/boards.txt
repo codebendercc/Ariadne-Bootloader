@@ -1,27 +1,69 @@
 ##############################################################
 
-ariadne328D.name=Arduino Duemilanove /w ATmega328 (Ariadne Bootloader)
+ariadne328DW5100.name=Arduino Duemilanove /w ATmega328 (Ariadne Bootloader, W5100)
 
-ariadne328D.upload.protocol=arduino
-ariadne328D.upload.maximum_size=28672
-ariadne328D.upload.speed=115200
+ariadne328DW5100.upload.protocol=arduino
+ariadne328DW5100.upload.maximum_size=28672
+ariadne328DW5100.upload.speed=115200
 
-ariadne328D.bootloader.low_fuses=0xFF
-ariadne328D.bootloader.high_fuses=0xD8
-ariadne328D.bootloader.extended_fuses=0x05
-ariadne328D.bootloader.path=ariadne
-ariadne328D.bootloader.file=ariadne_atmega328.hex
-ariadne328D.bootloader.unlock_bits=0x3F
-ariadne328D.bootloader.lock_bits=0x0F
+ariadne328DW5100.bootloader.low_fuses=0xFF
+ariadne328DW5100.bootloader.high_fuses=0xD8
+ariadne328DW5100.bootloader.extended_fuses=0x05
+ariadne328DW5100.bootloader.path=ariadne
+ariadne328DW5100.bootloader.file=ariadne_atmega328_w5100.hex
+ariadne328DW5100.bootloader.unlock_bits=0x3F
+ariadne328DW5100.bootloader.lock_bits=0x0F
 
-ariadne328D.build.mcu=atmega328p
-ariadne328D.build.f_cpu=16000000L
-ariadne328D.build.core=arduino:arduino
-ariadne328D.build.variant=arduino:standard
+ariadne328DW5100.build.mcu=atmega328p
+ariadne328DW5100.build.f_cpu=16000000L
+ariadne328DW5100.build.core=arduino:arduino
+ariadne328DW5100.build.variant=arduino:standard
 
 ##############################################################
 
-ariadne328U.name=Arduino Uno (Ariadne Bootloader)
+ariadne328DW5200.name=Arduino Duemilanove /w ATmega328 (Ariadne Bootloader, W5200)
+
+ariadne328DW5200.upload.protocol=arduino
+ariadne328DW5200.upload.maximum_size=28672
+ariadne328DW5200.upload.speed=115200
+
+ariadne328DW5200.bootloader.low_fuses=0xFF
+ariadne328DW5200.bootloader.high_fuses=0xD8
+ariadne328DW5200.bootloader.extended_fuses=0x05
+ariadne328DW5200.bootloader.path=ariadne
+ariadne328DW5200.bootloader.file=ariadne_atmega328_W5200.hex
+ariadne328DW5200.bootloader.unlock_bits=0x3F
+ariadne328DW5200.bootloader.lock_bits=0x0F
+
+ariadne328DW5200.build.mcu=atmega328p
+ariadne328DW5200.build.f_cpu=16000000L
+ariadne328DW5200.build.core=arduino:arduino
+ariadne328DW5200.build.variant=arduino:standard
+
+##############################################################
+
+ariadne328DW5500.name=Arduino Duemilanove /w ATmega328 (Ariadne Bootloader, W5500)
+
+ariadne328DW5500.upload.protocol=arduino
+ariadne328DW5500.upload.maximum_size=28672
+ariadne328DW5500.upload.speed=115200
+
+ariadne328DW5500.bootloader.low_fuses=0xFF
+ariadne328DW5500.bootloader.high_fuses=0xD8
+ariadne328DW5500.bootloader.extended_fuses=0x05
+ariadne328DW5500.bootloader.path=ariadne
+ariadne328DW5500.bootloader.file=ariadne_atmega328_W5500.hex
+ariadne328DW5500.bootloader.unlock_bits=0x3F
+ariadne328DW5500.bootloader.lock_bits=0x0F
+
+ariadne328DW5500.build.mcu=atmega328p
+ariadne328DW5500.build.f_cpu=16000000L
+ariadne328DW5500.build.core=arduino:arduino
+ariadne328DW5500.build.variant=arduino:standard
+
+##############################################################
+
+ariadne328U.name=Arduino Uno (Ariadne Bootloader, W5100)
 
 ariadne328U.upload.protocol=arduino
 ariadne328U.upload.maximum_size=28672
@@ -42,7 +84,7 @@ ariadne328U.build.variant=arduino:standard
 
 ##############################################################
 
-ariadne328E.name=Arduino Ethernet (Ariadne Bootloader)
+ariadne328E.name=Arduino Ethernet (Ariadne Bootloader, W5100)
 
 ariadne328E.upload.protocol=arduino
 ariadne328E.upload.maximum_size=28672
@@ -63,7 +105,7 @@ ariadne328E.build.variant=arduino:standard
 
 ##############################################################
 
-ariadne1280M.name=Arduino Mega 1280 (Ariadne Bootloader)
+ariadne1280M.name=Arduino Mega 1280 (Ariadne Bootloader, W5100)
 
 ariadne1280M.upload.protocol=arduino
 ariadne1280M.upload.maximum_size=126976
@@ -84,24 +126,129 @@ ariadne1280M.build.variant=arduino:mega
 
 ##############################################################
 
-ariadne2560M.name=Arduino Mega 2560 (Ariadne Bootloader)
+ariadne2560MW5100.name=Arduino Mega 2560 (Ariadne Bootloader, W5100)
 
-ariadne2560M.upload.protocol=stk500v2
-ariadne2560M.upload.maximum_size=258048
-ariadne2560M.upload.speed=115200
+ariadne2560MW5100.upload.protocol=stk500v2
+ariadne2560MW5100.upload.maximum_size=258048
+ariadne2560MW5100.upload.speed=115200
 
-ariadne2560M.bootloader.low_fuses=0xFF
-ariadne2560M.bootloader.high_fuses=0xD8
-ariadne2560M.bootloader.extended_fuses=0xFD
-ariadne2560M.bootloader.path=ariadne
-ariadne2560M.bootloader.file=ariadne_atmega2560.hex
-ariadne2560M.bootloader.unlock_bits=0x3F
-ariadne2560M.bootloader.lock_bits=0x0F
+ariadne2560MW5100.bootloader.low_fuses=0xFF
+ariadne2560MW5100.bootloader.high_fuses=0xD8
+ariadne2560MW5100.bootloader.extended_fuses=0xFD
+ariadne2560MW5100.bootloader.path=ariadne
+ariadne2560MW5100.bootloader.file=ariadne_atmega2560_W5100.hex
+ariadne2560MW5100.bootloader.unlock_bits=0x3F
+ariadne2560MW5100.bootloader.lock_bits=0x0F
 
-ariadne2560M.build.mcu=atmega2560
-ariadne2560M.build.f_cpu=16000000L
-ariadne2560M.build.core=arduino:arduino
-ariadne2560M.build.variant=arduino:mega
+ariadne2560MW5100.build.mcu=atmega2560
+ariadne2560MW5100.build.f_cpu=16000000L
+ariadne2560MW5100.build.core=arduino:arduino
+ariadne2560MW5100.build.variant=arduino:mega
+
+##############################################################
+
+ariadne2560MW5200.name=Arduino Mega 2560 (Ariadne Bootloader, W5200)
+
+ariadne2560MW5200.upload.protocol=stk500v2
+ariadne2560MW5200.upload.maximum_size=258048
+ariadne2560MW5200.upload.speed=115200
+
+ariadne2560MW5200.bootloader.low_fuses=0xFF
+ariadne2560MW5200.bootloader.high_fuses=0xD8
+ariadne2560MW5200.bootloader.extended_fuses=0xFD
+ariadne2560MW5200.bootloader.path=ariadne
+ariadne2560MW5200.bootloader.file=ariadne_atmega2560_W5200.hex
+ariadne2560MW5200.bootloader.unlock_bits=0x3F
+ariadne2560MW5200.bootloader.lock_bits=0x0F
+
+ariadne2560MW5200.build.mcu=atmega2560
+ariadne2560MW5200.build.f_cpu=16000000L
+ariadne2560MW5200.build.core=arduino:arduino
+ariadne2560MW5200.build.variant=arduino:mega
+
+##############################################################
+
+ariadne2560MW5500.name=Arduino Mega 2560 (Ariadne Bootloader, W5500)
+
+ariadne2560MW5500.upload.protocol=stk500v2
+ariadne2560MW5500.upload.maximum_size=258048
+ariadne2560MW5500.upload.speed=115200
+
+ariadne2560MW5500.bootloader.low_fuses=0xFF
+ariadne2560MW5500.bootloader.high_fuses=0xD8
+ariadne2560MW5500.bootloader.extended_fuses=0xFD
+ariadne2560MW5500.bootloader.path=ariadne
+ariadne2560MW5500.bootloader.file=ariadne_atmega2560_W5500.hex
+ariadne2560MW5500.bootloader.unlock_bits=0x3F
+ariadne2560MW5500.bootloader.lock_bits=0x0F
+
+ariadne2560MW5500.build.mcu=atmega2560
+ariadne2560MW5500.build.f_cpu=16000000L
+ariadne2560MW5500.build.core=arduino:arduino
+ariadne2560MW5500.build.variant=arduino:mega
+
+##############################################################
+
+ariadne1284W5100.name=Atmega 1284p (Ariadne Bootloader, W5100)
+
+ariadne1284W5100.upload.protocol=arduino
+ariadne1284W5100.upload.maximum_size=126976
+ariadne1284W5100.upload.speed=115200
+
+ariadne1284W5100.bootloader.low_fuses=0xFF
+ariadne1284W5100.bootloader.high_fuses=0xD8
+ariadne1284W5100.bootloader.extended_fuses=0xFD
+ariadne1284W5100.bootloader.path=ariadne
+ariadne1284W5100.bootloader.file=ariadne_atmega1284_w5100.hex
+ariadne1284W5100.bootloader.unlock_bits=0x3F
+ariadne1284W5100.bootloader.lock_bits=0x0F
+
+ariadne1284W5100.build.mcu=atmega1284p
+ariadne1284W5100.build.f_cpu=16000000L
+ariadne1284W5100.build.core=arduino:arduino
+ariadne1284W5100.build.variant=standard
+
+##############################################################
+
+ariadne1284W5200.name=Atmega 1284p (Ariadne Bootloader, W5200)
+
+ariadne1284W5200.upload.protocol=arduino
+ariadne1284W5200.upload.maximum_size=126976
+ariadne1284W5200.upload.speed=115200
+
+ariadne1284W5200.bootloader.low_fuses=0xFF
+ariadne1284W5200.bootloader.high_fuses=0xD8
+ariadne1284W5200.bootloader.extended_fuses=0xFD
+ariadne1284W5200.bootloader.path=ariadne
+ariadne1284W5200.bootloader.file=ariadne_atmega1284_w5100.hex
+ariadne1284W5200.bootloader.unlock_bits=0x3F
+ariadne1284W5200.bootloader.lock_bits=0x0F
+
+ariadne1284W5200.build.mcu=atmega1284p
+ariadne1284W5200.build.f_cpu=16000000L
+ariadne1284W5200.build.core=arduino:arduino
+ariadne1284W5200.build.variant=standard
+
+##############################################################
+
+ariadne1284W5500.name=Atmega 1284p (Ariadne Bootloader, W5500)
+
+ariadne1284W5500.upload.protocol=arduino
+ariadne1284W5500.upload.maximum_size=126976
+ariadne1284W5500.upload.speed=115200
+
+ariadne1284W5500.bootloader.low_fuses=0xFF
+ariadne1284W5500.bootloader.high_fuses=0xD8
+ariadne1284W5500.bootloader.extended_fuses=0xFD
+ariadne1284W5500.bootloader.path=ariadne
+ariadne1284W5500.bootloader.file=ariadne_atmega1284_w5100.hex
+ariadne1284W5500.bootloader.unlock_bits=0x3F
+ariadne1284W5500.bootloader.lock_bits=0x0F
+
+ariadne1284W5500.build.mcu=atmega1284p
+ariadne1284W5500.build.f_cpu=16000000L
+ariadne1284W5500.build.core=arduino:arduino
+ariadne1284W5500.build.variant=standard
 
 ##############################################################
 

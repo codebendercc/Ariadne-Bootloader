@@ -15,7 +15,7 @@
 #include "serial.h"
 #include "watchdog.h"
 #include "util.h"
-#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega1284P__)
 	#include "optiboot.h"
 #elif defined(__AVR_ATmega2560__)
 	#include "stk500boot.h"
@@ -92,7 +92,7 @@ uint8_t serialPoll(void)
 	if(UART_STATUS_REG & _BV(UART_RECEIVE_COMPLETE)) {
 		resetTick();
 		serialFlashing = TRUE;
-#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__)
+#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega1284P__)
 		return(processOptiboot());
 #elif defined(__AVR_ATmega2560__)
 		return(processStk500boot());

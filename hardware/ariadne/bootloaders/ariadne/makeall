@@ -1,13 +1,28 @@
 #!/bin/bash
 make clean
 #
-# The "big two" standard bootloaders.
-make atmega328
+# The standard bootloaders.
+make atmega328_w5100
+make atmega328_w5200
+make atmega328_w5500
 make atmega328_ethernet
-make atmega2560
+make atmega2560_w5100
+make atmega2560_w5200
+make atmega2560_w5500
+make atmega1284_w5100
+make atmega1284_w5200
+make atmega1284_w5500
 #make atmega8
 #make atmega168
-#make debug328
+#make debug328_w5100
+#make debug328_w5200
+#make debug328_w5500
+#make debug2560_w5100
+#make debug2560_w5200
+#make debug2560_w5500
+#make debug1284_w5100
+#make debug1284_w5200
+#make debug1284_w5500
 #
 # additional buildable platforms of
 #  somewhat questionable support level

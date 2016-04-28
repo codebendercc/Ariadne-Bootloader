@@ -39,13 +39,13 @@ void announceReply()
 	uint8_t value;
 	uint8_t i;
 
-	writePointer = spiReadWord(REG_S2_TX_WR0) + S2_TX_START;
+	writePointer = spiReadWord(REG_S2_TX_WR0, S2_R_CB) + S2_TX_START;
 	txPtr = txBuffer + 2;
 
 	// Send IP address in hex
 	//
 	for(i = REG_SIPR0; i <= REG_SIPR3; i++) {
-		value = spiReadReg(i);
+		value = spiReadReg(i, S2_R_CB);
 		*txPtr++ = hex[value >> 4];
 		*txPtr++ = hex[value & 0xf];
 	}
@@ -61,12 +61,12 @@ void announceReply()
 	packetLength += 2;
 	txPtr = txBuffer;
 	while(packetLength--) {
-		spiWriteReg(writePointer++, *txPtr++);
+		spiWriteReg(writePointer++, S2_W_CB, *txPtr++);
 		if(writePointer == S2_TX_END) writePointer = S2_TX_START;
 	}
-	spiWriteWord(REG_S2_TX_WR0, writePointer - S2_TX_START);
-	spiWriteReg(REG_S2_CR, CR_SEND);
-	while(spiReadReg(REG_S2_CR));
+	spiWriteWord(REG_S2_TX_WR0, S2_W_CB, writePointer - S2_TX_START);
+	spiWriteReg(REG_S2_CR, S2_W_CB, CR_SEND);
+	while(spiReadReg(REG_S2_CR, S2_R_CB));
 }
 
 //FIXME: void announcePacket(uint16_t packetSize) {
@@ -79,17 +79,17 @@ void announcePacket()
 	uint8_t* bufPtr = buffer;
 	uint16_t count;
 
-	readPointer = spiReadWord(REG_S2_RX_RD0) + S2_RX_START;
+	readPointer = spiReadWord(REG_S2_RX_RD0, S2_R_CB) + S2_RX_START;
 
 	// Read destination IP address
 	for(count = 0; count < 4; count++) {
-		spiWriteReg(REG_S2_DIPR0 + count, readNextByte());
+		spiWriteReg(REG_S2_DIPR0 + count, S2_W_CB, readNextByte());
 	}
 
 	// Read destination port - but ignore it and respond on 5555 anyway.
 	readNextByte();
 	readNextByte();
-	spiWriteWord(REG_S2_DPORT0, ANNOUNCE_PORT);
+	spiWriteWord(REG_S2_DPORT0, S2_W_CB, ANNOUNCE_PORT);
 
 	// Read packet length
 	packetLength = readNextByte() | (readNextByte() << 8);
@@ -99,8 +99,8 @@ void announcePacket()
 	for(count = packetLength; --count;) {
 		*bufPtr++ = readNextByte();
 	}
-	spiWriteWord(REG_S2_RX_RD0, readPointer - S2_RX_START); // Write back new pointer
-	spiWriteWord(REG_S2_CR, CR_RECV); // Receive again
+	spiWriteWord(REG_S2_RX_RD0, S2_W_CB, readPointer - S2_RX_START); // Write back new pointer
+	spiWriteWord(REG_S2_CR, S2_W_CB, CR_RECV); // Receive again
 
 	// Dump packet
 	bufPtr = buffer;
@@ -113,12 +113,12 @@ void announceInit()
 {
 	// Open socket
 	do {
-		spiWriteWord(REG_S2_PORT0, ANNOUNCE_PORT);
-		spiWriteReg(REG_S2_MR, MR_UDP);
-		spiWriteReg(REG_S2_CR, CR_OPEN);
-		if(spiReadReg(REG_S2_SR) != SOCK_UDP)
-			spiWriteReg(REG_S2_CR, CR_CLOSE);
-	} while(spiReadReg(REG_S2_SR) != SOCK_UDP);
+		spiWriteWord(REG_S2_PORT0, S2_W_CB, ANNOUNCE_PORT);
+		spiWriteReg(REG_S2_MR, S2_W_CB, MR_UDP);
+		spiWriteReg(REG_S2_CR, S2_W_CB, CR_OPEN);
+		if(spiReadReg(REG_S2_SR, S2_R_CB) != SOCK_UDP)
+			spiWriteReg(REG_S2_CR, S2_W_CB, CR_CLOSE);
+	} while(spiReadReg(REG_S2_SR, S2_R_CB) != SOCK_UDP);
 
 
 	DBG_ANN(tracePGMlnAnn(mDebugAnn_DONE);)
@@ -127,12 +127,12 @@ void announceInit()
 
 void announcePoll()
 {
-	uint16_t packetSize = spiReadWord(REG_S2_RX_RSR0);
+	uint16_t packetSize = spiReadWord(REG_S2_RX_RSR0, S2_R_CB);
 
 	if(packetSize) {
 		announcePacket(packetSize);
 		// Close the socket
-		spiWriteReg(REG_S2_CR, CR_CLOSE);
+		spiWriteReg(REG_S2_CR, S2_W_CB, CR_CLOSE);
 		announceInit();
 	}
 }

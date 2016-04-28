@@ -154,7 +154,7 @@ uint8_t processOptiboot(void)
 
 		verifySpace();
 
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560)
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560) || defined(__AVR_ATmega1284P__)
 		//      do putch(pgm_read_byte_near(address++));
 		//      while (--length);
 		do {

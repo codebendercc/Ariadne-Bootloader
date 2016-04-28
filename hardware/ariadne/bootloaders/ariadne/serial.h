@@ -87,7 +87,7 @@
 
 #elif defined(__AVR_ATmega64__) || defined(__AVR_ATmega128__) || defined(__AVR_ATmega162__) \
 || defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega1280__) \
-|| defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2561__)
+|| defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2561__) || defined(__AVR_ATmega1284P__)
 /* ATMega with two USART, use UART0 */
 	#define	UART_BAUD_RATE_LOW			UBRR0L
 	#define	UART_STATUS_REG				UCSR0A

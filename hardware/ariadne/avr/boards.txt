@@ -24,47 +24,67 @@ ariadne328D.build.board=AVR_DUEMILANOVE
 
 ## standard bootloader
 ## ---------------------------------------------
-ariadne328D.menu.version.standard=Standard
-ariadne328D.menu.version.standard.bootloader.file=ariadne/ariadne_atmega328.hex
+ariadne328D.menu.version.standardw5100=Standard w/ Wiznet W5100
+ariadne328D.menu.version.standardw5100.bootloader.file=ariadne/ariadne_atmega328_w5100.hex
 
 ## debug bootloader
 ## ---------------------------------------------
-ariadne328D.menu.version.debug=Debug
-ariadne328D.menu.version.debug.bootloader.file=ariadne/ariadne_debug328.hex
+ariadne328D.menu.version.debugw5100=Debug w/ Wiznet W5100
+ariadne328D.menu.version.debugw5100.bootloader.file=ariadne/ariadne_debug328_w5100.hex
 
 ##############################################################
 
-ariadne328U.name=Arduino Uno
+ariadne328UW.name=Arduino Uno
 
-ariadne328U.upload.tool=arduino:avrdude
-ariadne328U.upload.maximum_data_size=2048
-ariadne328U.upload.protocol=arduino
-ariadne328U.upload.maximum_size=28672
-ariadne328U.upload.speed=115200
+ariadne328UW.upload.tool=arduino:avrdude
+ariadne328UW.upload.maximum_data_size=2048
+ariadne328UW.upload.protocol=arduino
+ariadne328UW.upload.maximum_size=28672
+ariadne328UW.upload.speed=115200
 
-ariadne328U.bootloader.tool=arduino:avrdude
-ariadne328U.bootloader.low_fuses=0xFF
-ariadne328U.bootloader.high_fuses=0xD8
-ariadne328U.bootloader.extended_fuses=0x05
-ariadne328U.bootloader.unlock_bits=0x3F
-ariadne328U.bootloader.lock_bits=0x0F
+ariadne328UW.bootloader.tool=arduino:avrdude
+ariadne328UW.bootloader.low_fuses=0xFF
+ariadne328UW.bootloader.high_fuses=0xD8
+ariadne328UW.bootloader.extended_fuses=0x05
+ariadne328UW.bootloader.unlock_bits=0x3F
+ariadne328UW.bootloader.lock_bits=0x0F
 
-ariadne328U.build.mcu=atmega328p
-ariadne328U.build.f_cpu=16000000L
-ariadne328U.build.core=arduino:arduino
-ariadne328U.build.variant=arduino:standard
-ariadne328U.build.board=AVR_UNO
+ariadne328UW.build.mcu=atmega328p
+ariadne328UW.build.f_cpu=16000000L
+ariadne328UW.build.core=arduino:arduino
+ariadne328UW.build.variant=arduino:standard
+ariadne328UW.build.board=AVR_UNO
 
 
-## standard bootloader
+## standard bootloader for Arduino Uno with Wiznet W5100 chip
 ## ---------------------------------------------
-ariadne328U.menu.version.standard=Standard
-ariadne328U.menu.version.standard.bootloader.file=ariadne/ariadne_atmega328.hex
+ariadne328UW.menu.version.standardw5100=Standard w/ Wiznet W5100
+ariadne328UW.menu.version.standardw5100.bootloader.file=ariadne/ariadne_atmega328_w5100.hex
 
-## debug bootloader
+## debug bootloader for Arduino Uno with Wiznet W5100 chip
 ## ---------------------------------------------
-ariadne328U.menu.version.debug=Debug
-ariadne328U.menu.version.debug.bootloader.file=ariadne/ariadne_debug328.hex
+ariadne328UW.menu.version.debugw5100=Debug w/ Wiznet W5100
+ariadne328UW.menu.version.debugw5100.bootloader.file=ariadne/ariadne_debug328_w5100.hex
+
+## standard bootloader for Arduino Uno with Wiznet W5200 chip
+## ---------------------------------------------
+ariadne328UW.menu.version.standardw5200=Standard w/ Wiznet W5200
+ariadne328UW.menu.version.standardw5200.bootloader.file=ariadne/ariadne_atmega328_w5200.hex
+
+## debug bootloader for Arduino Uno with Wiznet W5200 chip
+## ---------------------------------------------
+ariadne328UW.menu.version.debugw5200=Debug w/ Wiznet W5200
+ariadne328UW.menu.version.debugw5200.bootloader.file=ariadne/ariadne_debug328_w5200.hex
+
+## standard bootloader for Arduino Uno with Wiznet W5500 chip
+## ---------------------------------------------
+ariadne328UW.menu.version.standardw5500=Standard w/ Wiznet W5500
+ariadne328UW.menu.version.standardw5500.bootloader.file=ariadne/ariadne_atmega328_w5500.hex
+
+## debug bootloader for Arduino Uno with Wiznet W5500 chip
+## ---------------------------------------------
+ariadne328UW.menu.version.debugw5500=Debug w/ Wiznet W5500
+ariadne328UW.menu.version.debugw5500.bootloader.file=ariadne/ariadne_debug328_w5500.hex
 
 ##############################################################
 
@@ -92,33 +112,92 @@ ariadne328E.build.board=AVR_ETHERNET
 
 ##############################################################
 
-ariadne2560M.name=Arduino Mega 2560
+ariadne2560MW.name=Arduino Mega 2560
 
-ariadne2560M.upload.tool=arduino:avrdude
-ariadne2560M.upload.maximum_data_size=8192
-ariadne2560M.upload.protocol=wiring
-ariadne2560M.upload.maximum_size=258048
-ariadne2560M.upload.speed=115200
+ariadne2560MW.upload.tool=arduino:avrdude
+ariadne2560MW.upload.maximum_data_size=8192
+ariadne2560MW.upload.protocol=wiring
+ariadne2560MW.upload.maximum_size=258048
+ariadne2560MW.upload.speed=115200
 
-ariadne2560M.bootloader.tool=arduino:avrdude
-ariadne2560M.bootloader.low_fuses=0xFF
-ariadne2560M.bootloader.high_fuses=0xD8
-ariadne2560M.bootloader.extended_fuses=0xFD
-ariadne2560M.bootloader.unlock_bits=0x3F
-ariadne2560M.bootloader.lock_bits=0x0F
+ariadne2560MW.bootloader.tool=arduino:avrdude
+ariadne2560MW.bootloader.low_fuses=0xFF
+ariadne2560MW.bootloader.high_fuses=0xD8
+ariadne2560MW.bootloader.extended_fuses=0xFD
+ariadne2560MW.bootloader.unlock_bits=0x3F
+ariadne2560MW.bootloader.lock_bits=0x0F
 
-ariadne2560M.build.mcu=atmega2560
-ariadne2560M.build.f_cpu=16000000L
-ariadne2560M.build.core=arduino:arduino
-ariadne2560M.build.variant=arduino:mega
-ariadne2560M.build.board=AVR_MEGA2560
+ariadne2560MW.build.mcu=atmega2560
+ariadne2560MW.build.f_cpu=16000000L
+ariadne2560MW.build.core=arduino:arduino
+ariadne2560MW.build.variant=arduino:mega
+ariadne2560MW.build.board=AVR_MEGA2560
 
-## standard bootloader
+## standard bootloader for Mega 2560 with Wiznet W5100 chip
 ## ---------------------------------------------
-ariadne2560M.menu.version.standard=Standard
-ariadne2560M.menu.version.standard.bootloader.file=ariadne/ariadne_atmega2560.hex
+ariadne2560MW.menu.version.standardw5100=Standard w/ Wiznet W5100
+ariadne2560MW.menu.version.standardw5100.bootloader.file=ariadne/ariadne_atmega2560_w5100.hex
 
-## debug bootloader
+## debug bootloader for Mega 2560 with Wiznet W5100 chip
 ## ---------------------------------------------
-ariadne2560M.menu.version.debug=Debug
-ariadne2560M.menu.version.debug.bootloader.file=ariadne/ariadne_debug2560.hex
+ariadne2560MW.menu.version.debugw5100=Debug w/ Wiznet W5100
+ariadne2560MW.menu.version.debugw5100.bootloader.file=ariadne/ariadne_debug2560_w5100.hex
+
+## standard bootloader for Mega 2560 with Wiznet W5200 chip
+## ---------------------------------------------
+ariadne2560MW.menu.version.standardw5200=Standard w/ Wiznet W5200
+ariadne2560MW.menu.version.standardw5200.bootloader.file=ariadne/ariadne_atmega2560_w5200.hex
+
+## debug bootloader for Mega 2560 with Wiznet W5200 chip
+## ---------------------------------------------
+ariadne2560MW.menu.version.debugw5200=Debug w/ Wiznet W5200
+ariadne2560MW.menu.version.debugw5200.bootloader.file=ariadne/ariadne_debug2560_w5200.hex
+
+## standard bootloader for Mega 2560 with Wiznet W5500 chip
+## ---------------------------------------------
+ariadne2560MW.menu.version.standardw5500=Standard w/ Wiznet W5500
+ariadne2560MW.menu.version.standardw5500.bootloader.file=ariadne/ariadne_atmega2560_w5500.hex
+
+## debug bootloader for Mega 2560 with Wiznet W5500 chip
+## ---------------------------------------------
+ariadne2560MW.menu.version.debugw5500=Debug w/ Wiznet W5500
+ariadne2560MW.menu.version.debugw5500.bootloader.file=ariadne/ariadne_debug2560_w5500.hex
+
+##############################################################
+
+ariadne1284W.name=Atmega 1284p
+
+ariadne1284W.upload.tool=arduino:avrdude
+ariadne1284W.upload.maximum_data_size=16384
+ariadne1284W.upload.maximum_size=126976
+ariadne1284W.upload.protocol=arduino
+ariadne1284W.upload.speed=115200
+
+ariadne1284W.bootloader.tool=arduino:avrdude
+ariadne1284W.bootloader.low_fuses=0xFF
+ariadne1284W.bootloader.high_fuses=0xD8
+ariadne1284W.bootloader.extended_fuses=0xFD
+ariadne1284W.bootloader.unlock_bits=0x3F
+ariadne1284W.bootloader.lock_bits=0x0F
+
+ariadne1284W.build.mcu=atmega1284p
+ariadne1284W.build.f_cpu=16000000L
+ariadne1284W.build.core=arduino:arduino
+ariadne1284W.build.variant=arduino:arduino
+ariadne1284W.build.board=1284P_STANDARD
+
+## Bootloader for 1284p with Wiznet W5100 chip
+## ---------------------------------------------
+ariadne1284W.menu.version.standardw5100=w/ Wiznet W5100
+ariadne1284W.menu.version.standardw5100.bootloader.file=ariadne/ariadne_atmega1284_w5100.hex
+
+## Bootloader for 1284p with Wiznet W5200 chip
+## ---------------------------------------------
+ariadne1284W.menu.version.standardw5200=w/ Wiznet W5200
+ariadne1284W.menu.version.standardw5200.bootloader.file=ariadne/ariadne_atmega1284_w5200.hex
+
+## Bootloader for 1284p with Wiznet W5500 chip
+## ---------------------------------------------
+ariadne1284W.menu.version.standardw5500=w/ Wiznet W5500
+ariadne1284W.menu.version.standardw5500.bootloader.file=ariadne/ariadne_atmega1284_w5500.hex
+
