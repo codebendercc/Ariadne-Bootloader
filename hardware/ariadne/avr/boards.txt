@@ -183,7 +183,7 @@ ariadne1284W.bootloader.lock_bits=0x0F
 ariadne1284W.build.mcu=atmega1284p
 ariadne1284W.build.f_cpu=16000000L
 ariadne1284W.build.core=arduino:arduino
-ariadne1284W.build.variant=arduino:arduino
+ariadne1284W.build.variant=standard
 ariadne1284W.build.board=1284P_STANDARD
 
 ## Bootloader for 1284p with Wiznet W5100 chip
