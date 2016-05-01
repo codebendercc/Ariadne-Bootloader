@@ -17,6 +17,12 @@
 #include "debug.h"
 #include "debug_net.h"
 
+#if (W5200 > 0)
+#include "w5200.c"
+#elif (W5500 > 0)
+#include "w5500.c"
+#else
+
 
 uint8_t registerBuffer[REGISTER_BLOCK_SIZE] = {
 	0x80,         // MR Mode - reset device
@@ -83,10 +89,12 @@ void netInit(void)
 
 	/** Configure Wiznet chip. Network settings */
 	for(i = 0; i < REGISTER_BLOCK_SIZE; i++)
-		spiWriteReg(i, registerBuffer[i]);
+		spiWriteReg(i, 0, registerBuffer[i]);
 
 	DBG_NET(tracePGMlnNet(mDebugNet_DONE);)
 }
+
+#endif
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;
 

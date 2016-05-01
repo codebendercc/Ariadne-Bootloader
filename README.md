@@ -115,7 +115,7 @@ the examples. You can write the network settings using the __WriteNetworkSetting
 to the serial using the __ReadNetworkSettings__.
 
 Note that the settings array in the __WriteNetworkSettings__ sketch hasn't got the settings in the usual
-order but rather in the order that __W5100__ reads them, so make sure you have put the correct values.
+order but rather in the order that __Wiznet chips__ read them, so make sure you have put the correct values.
 If you set the network settings you also have to set the TFTP data transfer port. The default is good
 enough but you may need to change it for the reasons that are listed below in the
 [Configuring your Router for Remote Flashing][9] section. There is also documentation on how use
@@ -337,10 +337,13 @@ Supported MCUs:
 
 * __ATmega328__
 * __ATmega2560__
+* __ATmega1284__
 
 Supported ethernet controllers:
 
 * __WizNet W5100__
+* __WizNet W5200__
+* __WizNet W5500__
 
 Tested Arduino Boards:
 

@@ -14,7 +14,7 @@
 #include "debug_spi.h"
 
 /** Send uint8_t to Ethernet controller */
-void spiWriteReg(uint16_t address, uint8_t value)
+void spiWriteReg(uint16_t address, uint8_t cb, uint8_t value)
 {
 	DBG_SPI_EX(
 		tracePGMlnSpi(mDebugSpi_NWREG);
@@ -26,6 +26,33 @@ void spiWriteReg(uint16_t address, uint8_t value)
 	SPCR = _BV(SPE) | _BV(MSTR); // Set SPI as master
 	SS_LOW();
 
+#if (W5200 > 0)
+
+	SPDR = address >> 8;
+	while(!(SPSR & _BV(SPIF)));
+
+	SPDR = address & 0xff;
+	while(!(SPSR & _BV(SPIF)));
+
+	SPDR = 0x80;
+	while(!(SPSR & _BV(SPIF)));
+
+	SPDR = 0x01;
+	while(!(SPSR & _BV(SPIF)));
+
+#elif (W5500 > 0)
+
+	SPDR = address >> 8;
+	while(!(SPSR & _BV(SPIF)));
+
+	SPDR = address & 0xff;
+	while(!(SPSR & _BV(SPIF)));
+
+	SPDR = cb;  //Socket 3 BSB Write 0x6D Selects Socket 3 Register, write mode, 1 byte data length
+	while(!(SPSR & _BV(SPIF)));
+
+#else //Standard W5100 Code
+
 	SPDR = SPI_WRITE;
 	while(!(SPSR & _BV(SPIF)));
 
@@ -35,22 +62,26 @@ void spiWriteReg(uint16_t address, uint8_t value)
 	SPDR = address & 0xff;
 	while(!(SPSR & _BV(SPIF)));
 
+#endif
+
 	SPDR = value;
 	while(!(SPSR & _BV(SPIF)));
 
 	SS_HIGH();
-	SPCR = 0; // Turn off SPI
+	cb = 0; //prevents compiler whining about unused cb variable
+	SPCR = cb; // Turn off SPI	
+
 }
 
-void spiWriteWord(uint16_t address, uint16_t value)
+void spiWriteWord(uint16_t address, uint8_t cb, uint16_t value)
 {
 	// Write uint16_t to Ethernet controller
-	spiWriteReg(address++, value >> 8);
-	spiWriteReg(address, value & 0xff);
+	spiWriteReg(address++, cb, value >> 8);
+	spiWriteReg(address, cb, value & 0xff);
 }
 
 /** Read uint8_t from Ethernet controller */
-uint8_t spiReadReg(uint16_t address)
+uint8_t spiReadReg(uint16_t address, uint8_t cb)
 {
 	#if defined(SPAM_ME)
 	DBG_SPI_EX(
@@ -64,6 +95,34 @@ uint8_t spiReadReg(uint16_t address)
 	SPCR = _BV(SPE) | _BV(MSTR);
 	SS_LOW();
 
+#if (W5200 > 0)
+
+	SPDR = address >> 8;
+	while(!(SPSR & _BV(SPIF)));
+
+	SPDR = address & 0xff;
+	while(!(SPSR & _BV(SPIF)));
+
+	SPDR = 0x00;
+	while(!(SPSR & _BV(SPIF)));
+
+	SPDR = 0x01;
+	while(!(SPSR & _BV(SPIF)));
+
+#elif (W5500 > 0)
+//W5500 code
+
+	SPDR = address >> 8;
+	while(!(SPSR & _BV(SPIF)));
+
+	SPDR = address & 0xff;
+	while(!(SPSR & _BV(SPIF)));
+
+	SPDR = cb;  //Socket 3 BSB Read 0x69 Selects Socket 3 Register, read mode, 1 byte data length
+	while(!(SPSR & _BV(SPIF)));
+
+#else //Standard W5100 Code
+
 	SPDR = SPI_READ;
 	while(!(SPSR & _BV(SPIF)));
 
@@ -73,20 +132,24 @@ uint8_t spiReadReg(uint16_t address)
 	SPDR = address & 0xff;
 	while(!(SPSR & _BV(SPIF)));
 
+#endif
+
 	SPDR = 0;
 	while(!(SPSR & _BV(SPIF)));
 
 	SS_HIGH();
 	returnValue = SPDR;
-	SPCR = 0;
+
+	cb = 0; //prevents compiler whining about unused cb variable
+	SPCR = cb; // Turn off SPI
 
 	return(returnValue);
 }
 
-uint16_t spiReadWord(uint16_t address)
+uint16_t spiReadWord(uint16_t address, uint8_t cb)
 {
 	// Read uint16_t from Ethernet controller
-	return((spiReadReg(address) << 8) | spiReadReg(address + 1));
+	return((spiReadReg(address, cb) << 8) | spiReadReg(address + 1, cb));
 }
 
 void spiInit(void)

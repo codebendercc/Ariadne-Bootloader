@@ -32,7 +32,7 @@
 #if (FLASHEND > 0x10000)
 	#if defined(__AVR_ATmega2560__)
 		#define PROGMEM_OFFSET 0x30000
-	#elif defined(__AVR_ATmega1280__)
+	#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1284P__)
 		#define PROGMEM_OFFSET 0x10000
 	#else
 		#error "Unknown MCU. Cannot define PROGMEM_OFFSET"

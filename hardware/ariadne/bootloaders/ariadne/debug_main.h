@@ -26,6 +26,8 @@ const unsigned char mDebugMain_TITLE[]	PROGMEM = 	"Ariadne for Arduino Uno, Vers
 		#endif
 	#elif defined(__AVR_ATmega2560__)
 const unsigned char mDebugMain_TITLE[]	PROGMEM = 	"Ariadne for Arduino Mega2560, Version 0.5";
+	#elif defined(__AVR_ATmega1284P__)
+const unsigned char mDebugMain_TITLE[]	PROGMEM = 	"Ariadne for Arduino Mega1284P, Version 0.5";
 	#else
 const unsigned char mDebugMain_TITLE[]	PROGMEM = 	"Unknown MCU with ariadne, Version 0.5";
 	#endif
