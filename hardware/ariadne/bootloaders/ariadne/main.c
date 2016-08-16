@@ -128,6 +128,8 @@ int main(void)
 			if(tftpFlashing == TRUE) {
 				// Delete first page of flash memory
 				boot_page_erase(0);
+				// Re-initialize Network
+				netInit();
 				// Reinitialize TFTP
 				tftpInit();
 				// Reset the timeout counter
